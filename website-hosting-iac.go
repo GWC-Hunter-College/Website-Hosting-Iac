@@ -5,6 +5,8 @@ import (
 	// "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
 	// "github.com/aws/constructs-go/constructs/v10"
 	"github.com/aws/jsii-runtime-go"
+
+	stack "website-hosting-iac/internal/stack"
 )
 
 type WebsiteHostingIacStackProps struct {
@@ -38,6 +40,20 @@ func main() {
 	// 		Env: env(),
 	// 	},
 	// })
+
+	stack.NewFrontendStack(app, "FrontendStack", &stack.FrontendStackProps{
+		Props: awscdk.StackProps{
+			Env:         env(),
+			Description: jsii.String("Stack for the GWC website deployment"),
+		},
+	})
+
+	stack.NewFrontendHccStack(app, "FrontendHccStack", &stack.FrontendHccStackProps{
+		Props: awscdk.StackProps{
+			Env:         env(),
+			Description: jsii.String("Stack for the EMS website deployment"),
+		},
+	})
 
 	app.Synth(nil)
 }
